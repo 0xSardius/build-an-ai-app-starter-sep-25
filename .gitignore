@@ -35,3 +35,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# extraction state files
+app/(1-extraction)/.extraction-state.json
+app/(1-extraction)/*-extracted.json

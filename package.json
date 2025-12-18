@@ -9,6 +9,7 @@
     "lint": "next lint",
     "extraction": "tsx \"app/(1-extraction)/extraction.ts\"",
     "extraction:universal": "tsx \"app/(1-extraction)/universal-extractor.ts\"",
+    "extraction:streaming": "tsx \"app/(1-extraction)/streaming-extraction.ts\"",
     "classification": "tsx \"app/(2-classification)/classification.ts\"",
     "invisible-ai:compare": "tsx \"app/(2-invisible-ai)/test-structured.ts\"",
     "invisible-ai:demo": "tsx \"app/(2-invisible-ai)/invisible-ai-demo.ts\""
