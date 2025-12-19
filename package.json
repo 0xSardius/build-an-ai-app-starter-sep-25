@@ -10,6 +10,9 @@
     "extraction": "tsx \"app/(1-extraction)/extraction.ts\"",
     "extraction:universal": "tsx \"app/(1-extraction)/universal-extractor.ts\"",
     "extraction:streaming": "tsx \"app/(1-extraction)/streaming-extraction.ts\"",
+    "model:compare": "tsx \"app/model-comparison.ts\"",
+    "model-router:demo": "tsx \"lib/model-router-demo.ts\"",
+    "model-router:test": "tsx \"lib/model-router.test.ts\"",
     "classification": "tsx \"app/(2-classification)/classification.ts\"",
     "invisible-ai:compare": "tsx \"app/(2-invisible-ai)/test-structured.ts\"",
     "invisible-ai:demo": "tsx \"app/(2-invisible-ai)/invisible-ai-demo.ts\""
