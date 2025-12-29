@@ -52,11 +52,45 @@ async function smartEmailTriage(emailSubject: string, emailPreview: string) {
   // Include: category (urgent/action-required/fyi/spam/newsletter)
   //          priority (high/medium/low)
   //          suggestedFolder, requiresResponse, estimatedResponseTime
+  const emailSchema = z.object({
+    category: z
+      .enum(["urgent", "action-required", "fyi", "spam", "newsletter"])
+      .describe("The category of the email"),
+    priority: z
+      .enum(["high", "medium", "low"])
+      .describe("The priority of the email"),
+    suggestedFolder: z
+      .string()
+      .nullable()
+      .describe("The suggested folder for the email"),
+    requiresResponse: z
+      .boolean()
+      .describe("Whether the email requires a response"),
+    estimatedResponseTime: z
+      .string()
+      .nullable()
+      .describe("The estimated response time for the email"),
+  });
 
   // TODO: Use generateObject to analyze and categorize the email
+  const { object: emailDetails } = await generateObject({
+    model: "openai/gpt-4.1",
+    schema: emailSchema,
+    prompt: `Analyze and categorize the following email: ${emailSubject} ${emailPreview}`,
+  });
 
   // TODO: Display the triage results
   // Show how email gets automatically organized
+  console.log("✨ AI automatically categorizes your email:\n");
+  console.log(`📧 Category: ${emailDetails.category}`);
+  console.log(`🔥 Priority: ${emailDetails.priority}`);
+  if (emailDetails.suggestedFolder)
+    console.log(`📂 Suggested Folder: ${emailDetails.suggestedFolder}`);
+  console.log(`📩 Requires Response: ${emailDetails.requiresResponse}`);
+  if (emailDetails.estimatedResponseTime)
+    console.log(
+      `🕒 Estimated Response Time: ${emailDetails.estimatedResponseTime}`
+    );
 }
 
 async function runExamples() {
