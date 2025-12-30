@@ -15,7 +15,8 @@
     "model-router:test": "tsx \"lib/model-router.test.ts\"",
     "classification": "tsx \"app/(2-classification)/classification.ts\"",
     "invisible-ai:compare": "tsx \"app/(2-invisible-ai)/test-structured.ts\"",
-    "invisible-ai:demo": "tsx \"app/(2-invisible-ai)/invisible-ai-demo.ts\""
+    "invisible-ai:demo": "tsx \"app/(2-invisible-ai)/invisible-ai-demo.ts\"",
+    "moderation:test": "tsx \"app/api/moderation/test-concurrent.ts\""
   },
   "dependencies": {
     "@ai-sdk/gateway": "^1.0.0",
@@ -35,7 +36,8 @@
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "tailwind-merge": "^2.5.5",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@upstash/redis": "^1.36.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
