@@ -115,7 +115,9 @@ function initCache() {
     console.log("✅ Using Redis cache");
   } else {
     cacheAdapter = new MemoryCache();
-    console.log("✅ Using in-memory cache (set UPSTASH_REDIS_* env vars for Redis)");
+    console.log(
+      "✅ Using in-memory cache (set UPSTASH_REDIS_* env vars for Redis)"
+    );
   }
 }
 
@@ -127,7 +129,10 @@ if (typeof cacheAdapter === "undefined") {
 // Generate cache key from message
 export function getCacheKey(message: string, locale?: string): string {
   const normalized = message.trim().toLowerCase();
-  const hash = crypto.createHash("sha256").update(normalized + (locale || "")).digest("hex");
+  const hash = crypto
+    .createHash("sha256")
+    .update(normalized + (locale || ""))
+    .digest("hex");
   return `moderation:${hash}`;
 }
 
@@ -148,7 +153,10 @@ export async function getCachedResult<T>(key: string): Promise<T | null> {
 }
 
 // Cache moderation result
-export async function setCachedResult<T>(key: string, result: T): Promise<void> {
+export async function setCachedResult<T>(
+  key: string,
+  result: T
+): Promise<void> {
   try {
     await cacheAdapter.set(key, JSON.stringify(result), CACHE_TTL_SECONDS);
   } catch (error) {
@@ -180,4 +188,3 @@ export function getCacheStats() {
     size: "unknown",
   };
 }
-

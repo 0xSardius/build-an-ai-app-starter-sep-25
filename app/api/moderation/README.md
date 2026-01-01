@@ -21,6 +21,7 @@ Enterprise-scale content moderation API with streaming support, language detecti
 Moderate a message for inappropriate content.
 
 **Request Body:**
+
 ```json
 {
   "message": "The message to moderate",
@@ -30,6 +31,7 @@ Moderate a message for inappropriate content.
 ```
 
 **Response (Non-streaming):**
+
 ```json
 {
   "language": "English",
@@ -59,6 +61,7 @@ Returns a text stream with incremental moderation results.
 Get current moderation metrics.
 
 **Response:**
+
 ```json
 {
   "metrics": {
@@ -96,12 +99,12 @@ Get current moderation metrics.
 ### Basic Moderation
 
 ```typescript
-const response = await fetch('/api/moderation', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("/api/moderation", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    message: "Hello, this is a normal message."
-  })
+    message: "Hello, this is a normal message.",
+  }),
 });
 
 const result = await response.json();
@@ -112,13 +115,13 @@ console.log(`Language: ${result.language}`);
 ### Streaming Moderation
 
 ```typescript
-const response = await fetch('/api/moderation', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("/api/moderation", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     message: "Content to moderate",
-    stream: true
-  })
+    stream: true,
+  }),
 });
 
 const reader = response.body?.getReader();
@@ -127,9 +130,9 @@ const decoder = new TextDecoder();
 while (true) {
   const { done, value } = await reader.read();
   if (done) break;
-  
+
   const chunk = decoder.decode(value);
-  console.log('Stream chunk:', chunk);
+  console.log("Stream chunk:", chunk);
 }
 ```
 
@@ -137,20 +140,20 @@ while (true) {
 
 ```typescript
 // Auto-detect language
-await fetch('/api/moderation', {
-  method: 'POST',
+await fetch("/api/moderation", {
+  method: "POST",
   body: JSON.stringify({
-    message: "Hola, ¿cómo estás?"
-  })
+    message: "Hola, ¿cómo estás?",
+  }),
 });
 
 // Specify locale
-await fetch('/api/moderation', {
-  method: 'POST',
+await fetch("/api/moderation", {
+  method: "POST",
   body: JSON.stringify({
     message: "Hello, how are you?",
-    locale: "en"
-  })
+    locale: "en",
+  }),
 });
 ```
 
@@ -167,6 +170,7 @@ pnpm moderation:test
 ```
 
 The test suite includes:
+
 - Single request testing
 - Concurrent request testing (1, 3, 5, 10 concurrent requests)
 - Streaming vs non-streaming comparison
@@ -176,6 +180,7 @@ The test suite includes:
 ## Moderation Categories
 
 The API detects and categorizes:
+
 - `spam`: Promotional or spam content
 - `violence`: Threats or violent content
 - `hate_speech`: Discriminatory or hateful content
@@ -195,12 +200,14 @@ The API detects and categorizes:
 ## Alert Routing
 
 Flagged content (severity: "critical" or flagged: true) is automatically routed to:
+
 - `console.error()` for immediate visibility
 - Can be extended to webhooks, queues, or external alerting systems
 
 ## Telemetry
 
 The moderation pipeline integrates with the model-router telemetry system to track:
+
 - Request latency
 - Success rates
 - Model selection
@@ -219,6 +226,7 @@ The API includes intelligent caching for repeated messages:
 - **Redis Support**: Optional Redis for distributed caching
 
 **Setup Redis (Optional):**
+
 ```bash
 # Add to .env
 UPSTASH_REDIS_REST_URL=https://your-redis.upstash.io
@@ -228,6 +236,7 @@ UPSTASH_REDIS_REST_TOKEN=your-token
 **Without Redis**: Uses in-memory cache (perfect for single-instance deployments)
 
 **Cache Behavior**:
+
 - Cache key is based on message hash + locale
 - Critical severity messages are NOT cached (always fresh check)
 - Cache TTL: 1 hour (configurable)
@@ -241,6 +250,7 @@ Built-in rate limiting protects against abuse:
 - **Headers**: Rate limit info in response headers
 
 **Configuration:**
+
 ```bash
 # .env
 RATE_LIMIT_MAX_REQUESTS=100    # Max requests per window
@@ -248,12 +258,14 @@ RATE_LIMIT_WINDOW_SECONDS=60   # Time window in seconds
 ```
 
 **Rate Limit Headers:**
+
 - `X-RateLimit-Limit`: Maximum requests allowed
 - `X-RateLimit-Remaining`: Remaining requests in window
 - `X-RateLimit-Reset`: When the limit resets (ISO timestamp)
 - `Retry-After`: Seconds until retry (on 429 responses)
 
 **Response on Rate Limit Exceeded:**
+
 ```json
 {
   "error": "Rate limit exceeded",
@@ -265,9 +277,9 @@ RATE_LIMIT_WINDOW_SECONDS=60   # Time window in seconds
 ## Performance
 
 Designed for enterprise-scale with:
+
 - Low latency (< 2s target, < 50ms with cache hits)
 - High throughput (tested with 10+ concurrent requests)
 - Streaming support for real-time processing
 - Automatic model selection based on performance metrics
 - Cache hit rates typically 30-70% for repeated content
-
